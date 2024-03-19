@@ -18,16 +18,16 @@ export default function EventId({userDetails}) {
     const [scanUser, setScanUser] = useState()
     const [amount, setAmount] = useState()
     const [numberOfTickets, setNumberOfTickets] = useState()
-    const router = useRouter()
-    const onNewScanResult = (decodedText, decodedResult) => {
-        // handle decoded results here
-        console.log("decoded text ",decodedText , " ", decodedResult)
-        // handleSenderEmailChange(senderEmails.length+1, decodedText)
-        // alert(decodedResult ,decodedText)
-        // const user = decodedText;
-        setuserId(decodedText)
-        html5QrCode.stop()
-    };
+    // const router = useRouter()
+    // const onNewScanResult = (decodedText, decodedResult) => {
+    //     // handle decoded results here
+    //     console.log("decoded text ",decodedText , " ", decodedResult)
+    //     // handleSenderEmailChange(senderEmails.length+1, decodedText)
+    //     // alert(decodedResult ,decodedText)
+    //     // const user = decodedText;
+    //     setuserId(decodedText)
+    //     html5QrCode.stop()
+    // };
 
     const getUser = async ( ) =>{
         const userResponse = await axios.post(`/api/registerStudent`,{
@@ -49,11 +49,13 @@ export default function EventId({userDetails}) {
           StatusAlertService.showError("Insuffient Funds");
         } 
     }
-    useEffect(()=>{
-        if(userId){
-          getUser()
-        }
-      },[userId])
+    // useEffect(()=>{
+    //     if(userId){
+    //       getUser()
+    //     }
+    //   },[userId])
+
+
   return (
     // <div>
     //   <StatusAlert />
