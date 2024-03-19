@@ -1,0 +1,14 @@
+import User from "@/Model/User";
+import connectDB from "../lib/connectDB";
+
+
+export default async function handler(req, res) {
+    await connectDB()
+    
+    const userId = req.query.userId
+    console.log("user id ",userId);    
+    const user = await User.findOne({userId : userId})
+    console.log("user ",user);
+    // console.log("inside api",name , age)
+    res.status(200).json({ person: user })
+  }
