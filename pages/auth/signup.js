@@ -4,7 +4,7 @@ import { useRouter } from "next/dist/client/router";
 import axios from "axios";
 import Link from "next/link";
 
-export default function signup() {
+export default function Signup() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");

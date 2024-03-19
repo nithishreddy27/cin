@@ -1,7 +1,7 @@
 import React from 'react'
 
-export default function testing() {
+export default function Testing() {
   return (
-    <div>testing</div>
+    <div>T</div>
   )
 }
