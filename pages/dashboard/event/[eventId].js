@@ -11,44 +11,44 @@ import "react-status-alert/dist/status-alert.css";
 import { useRouter } from 'next/router';
 
 export default function EventId({userDetails}) {
-    const user = JSON.parse(userDetails);
-    // console.log("user ",user);
+    // const user = JSON.parse(userDetails);
+    // // console.log("user ",user);
 
-    const [userId, setuserId] = useState()
-    const [scanUser, setScanUser] = useState()
-    const [amount, setAmount] = useState()
-    const [numberOfTickets, setNumberOfTickets] = useState()
-    // const router = useRouter()
-    // const onNewScanResult = (decodedText, decodedResult) => {
-    //     // handle decoded results here
-    //     console.log("decoded text ",decodedText , " ", decodedResult)
-    //     // handleSenderEmailChange(senderEmails.length+1, decodedText)
-    //     // alert(decodedResult ,decodedText)
-    //     // const user = decodedText;
-    //     setuserId(decodedText)
-    //     html5QrCode.stop()
-    // };
+    // const [userId, setuserId] = useState()
+    // const [scanUser, setScanUser] = useState()
+    // const [amount, setAmount] = useState()
+    // const [numberOfTickets, setNumberOfTickets] = useState()
+    // // const router = useRouter()
+    // // const onNewScanResult = (decodedText, decodedResult) => {
+    // //     // handle decoded results here
+    // //     console.log("decoded text ",decodedText , " ", decodedResult)
+    // //     // handleSenderEmailChange(senderEmails.length+1, decodedText)
+    // //     // alert(decodedResult ,decodedText)
+    // //     // const user = decodedText;
+    // //     setuserId(decodedText)
+    // //     html5QrCode.stop()
+    // // };
 
-    const getUser = async ( ) =>{
-        const userResponse = await axios.post(`/api/registerStudent`,{
-            userId:userId ,
-            amount : user.eventAmount,
-            eventName : user.eventName,
-            eventId : user.eventId,
-            eventAmount : user.eventAmount,
-            numberOfTickets : numberOfTickets
-        } )
-        setScanUser(userResponse.data.person)
-        console.log("user Res ",userResponse);
-        if(userResponse.data.person){
-            StatusAlertService.showSuccess(`Successful Registered to ${user.eventName}`);
-            // router.reload()
-            setuserId("")
-          }
-        else{
-          StatusAlertService.showError("Insuffient Funds");
-        } 
-    }
+    // const getUser = async ( ) =>{
+    //     const userResponse = await axios.post(`/api/registerStudent`,{
+    //         userId:userId ,
+    //         amount : user.eventAmount,
+    //         eventName : user.eventName,
+    //         eventId : user.eventId,
+    //         eventAmount : user.eventAmount,
+    //         numberOfTickets : numberOfTickets
+    //     } )
+    //     setScanUser(userResponse.data.person)
+    //     console.log("user Res ",userResponse);
+    //     if(userResponse.data.person){
+    //         StatusAlertService.showSuccess(`Successful Registered to ${user.eventName}`);
+    //         // router.reload()
+    //         setuserId("")
+    //       }
+    //     else{
+    //       StatusAlertService.showError("Insuffient Funds");
+    //     } 
+    // }
     // useEffect(()=>{
     //     if(userId){
     //       getUser()
