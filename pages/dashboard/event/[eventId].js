@@ -72,56 +72,58 @@ export default function EventId() {
           StatusAlertService.showError("Insuffient Funds");
         } 
     }
-    useEffect(()=>{
-        if(userId){
-          getUser()
-        }
-      },[userId])
+    // useEffect(()=>{
+    //     if(userId){
+    //       getUser()
+    //     }
+    //   },[userId])
 
 
   return (
-    // <div>
-    //   <StatusAlert />
-
-    //     EventId
-    //     <div>
-    //         <div>
-    //             <h1>Email : {user.email}</h1>
-    //             <h1>Event Name : {user.eventName}</h1>
-    //             <h1>Event Id : {user.eventId}</h1>
-    //             <h1>Event Amount : {user.eventAmount}</h1> 
-    //         </div>
-
-    //         <div>
-    //             <input type="text" name="userId" id="userId" value={userId} onChange={()=>{
-    //                 console.log("Cant change");
-    //             }}/>
-    //             <div>
-
-    //             <input type="text" name="numberOfTickets" id="numberOfTickets" value={numberOfTickets} className='border border-black my-2' onChange={(e)=>{
-    //                 const value = e.target.value.replace(/\D/g, ''); // Remove non-digit characters
-    //                 setNumberOfTickets(value);
-    //               }}/>
-    //               </div>
-    //              <button onClick={getUser}>Submit</button>
-    //         </div>
-    //     </div>
-
-    //     {!scanUser && (
-    //     <Html5QrcodePlugin
-    //     fps={10}
-    //     qrbox={250}
-    //     disableFlip={false}
-    //     qrCodeSuccessCallback={onNewScanResult}
-    // />
-    // )}
-
-    // </div>
     <div>
-Start
+      <StatusAlert />
 
-<button onClick={()=>{signOut()}}>Signout</button>
+        EventId
+        <div>
+            {user && (
+              <div>
+              <h1>Email : {user.email}</h1>
+              <h1>Event Name : {user.eventName}</h1>
+              <h1>Event Id : {user.eventId}</h1>
+              <h1>Event Amount : {user.eventAmount}</h1> 
+          </div>
+            )}
+
+            <div>
+                <input type="text" name="userId" id="userId" value={userId} onChange={()=>{
+                    console.log("Cant change");
+                }}/>
+                <div>
+
+                <input type="text" name="numberOfTickets" id="numberOfTickets" value={numberOfTickets} className='border border-black my-2' onChange={(e)=>{
+                    const value = e.target.value.replace(/\D/g, ''); // Remove non-digit characters
+                    setNumberOfTickets(value);
+                  }}/>
+                  </div>
+                 <button onClick={getUser}>Submit</button>
+            </div>
+        </div>
+
+        {!scanUser && (
+        <Html5QrcodePlugin
+        fps={10}
+        qrbox={250}
+        disableFlip={false}
+        qrCodeSuccessCallback={onNewScanResult}
+    />
+    )}
+
     </div>
+//     <div>
+// Start
+
+// <button onClick={()=>{signOut()}}>Signout</button>
+//     </div>
   )
 }
 
