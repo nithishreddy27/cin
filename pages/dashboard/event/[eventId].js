@@ -102,8 +102,8 @@ export async function getServerSideProps(context) {
 
 
     const session = await getSession(context);
-    const query = context.query.eventId
-    console.log("session ",query);
+    const query = context?.query?.eventId
+    // console.log("session ",query);
     
     if(!session){
         return {
@@ -116,9 +116,9 @@ export async function getServerSideProps(context) {
     var user
     if(session){
       // console.log("In server side ",session.user.email)
-      const userResponse = await axios.get(`${process.env.HOST_URL}/api/user?email=${session.user.email}`)
-      console.log("user ",userResponse.data.user);
-      user  = userResponse.data.user
+      const userResponse = await axios.get(`${process.env.HOST_URL}/api/user?email=${session?.user?.email}`)
+      console.log("user ",userResponse?.data.user);
+      user  = userResponse?.data.user
     //   transactions = await axios.get(`${process.env.HOST_URL}/api/transactions?email=${session.user.email}`)
         // await axios.get()
     //   user = userResponse.data.user

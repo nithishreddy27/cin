@@ -23,7 +23,7 @@ export default function Navbar() {
             </div>
             <div className='mx-5'>
 
-            <Link href={"/dashboard/event/1"} className='mx-5'>Event</Link>
+            <Link href={"/dashboard/event/12333"} className='mx-5'>Event</Link>
             </div>
         </div>
     </div>
