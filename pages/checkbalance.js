@@ -24,6 +24,7 @@ export default function Checkbalance() {
 
         }
         setUser(userResponse.data.person)
+        setScanUser(user)
         // console.log("user Res ",userResponse);
     }
 
@@ -36,7 +37,11 @@ export default function Checkbalance() {
     <div>checkbalance
 
         
-
+    {user && (
+        <div>
+            user amount  : {user.amount}
+        </div>
+    )}
 {!scanUser && (
         <Html5QrcodePlugin
         fps={10}
