@@ -103,16 +103,16 @@ export async function getServerSideProps(context) {
 
     const session = await getSession(context);
     const query = context?.query?.eventId
-    // console.log("session ",query);
+    console.log("session ",query);
     
-    // if(!session){
-    //     return {
-    //       redirect: {
-    //         destination: '/auth/login',
-    //         permanent: false,
-    //       },
-    //     };
-    //   }
+    if(!session){
+        return {
+          redirect: {
+            destination: '/auth/login',
+            permanent: false,
+          },
+        };
+      }
     var user
     if(session){
       // console.log("In server side ",session.user.email)
