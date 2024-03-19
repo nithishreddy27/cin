@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getSession } from 'next-auth/react'
+import { getSession, signOut, useSession } from 'next-auth/react'
 // import React from 'react'
 
 import Html5QrcodePlugin from '@/src/Html5QrcodePlugin'
@@ -10,50 +10,73 @@ import StatusAlert, { StatusAlertService } from "react-status-alert";
 import "react-status-alert/dist/status-alert.css";
 import { useRouter } from 'next/router';
 
-export default function EventId({userDetails}) {
+export default function EventId() {
+    const { data: session, status } = useSession()
+    const router = useRouter()
+    console.log("status ",status , session);
+    const [user, setUser] = useState()
+
+    useEffect(()=>{
+      if(status == "authenticated" && session){
+        getOrganizer(session)
+      }
+      if(status == "unauthenticated"){
+        router.push("/auth/login")
+      }
+
+    },[session])
+
+
+
+    async function getOrganizer(session){
+      const userResponse = await axios.get(`../../api/user?email=${session?.user?.email}`)
+      console.log("user ",userResponse?.data.user);
+      setUser(userResponse?.data.user)
+    }
+    
     // const user = JSON.parse(userDetails);
     // // console.log("user ",user);
 
-    // const [userId, setuserId] = useState()
-    // const [scanUser, setScanUser] = useState()
-    // const [amount, setAmount] = useState()
-    // const [numberOfTickets, setNumberOfTickets] = useState()
-    // // const router = useRouter()
-    // // const onNewScanResult = (decodedText, decodedResult) => {
-    // //     // handle decoded results here
-    // //     console.log("decoded text ",decodedText , " ", decodedResult)
-    // //     // handleSenderEmailChange(senderEmails.length+1, decodedText)
-    // //     // alert(decodedResult ,decodedText)
-    // //     // const user = decodedText;
-    // //     setuserId(decodedText)
-    // //     html5QrCode.stop()
-    // // };
+    const [userId, setuserId] = useState()
+    const [scanUser, setScanUser] = useState()
+    const [amount, setAmount] = useState()
+    const [numberOfTickets, setNumberOfTickets] = useState()
+    // const router = useRouter()
+    const onNewScanResult = (decodedText, decodedResult) => {
+        // handle decoded results here
+        console.log("decoded text ",decodedText , " ", decodedResult)
+        // handleSenderEmailChange(senderEmails.length+1, decodedText)
+        // alert(decodedResult ,decodedText)
+        // const user = decodedText;
+        setuserId(decodedText)
+        html5QrCode.stop()
+    };
 
-    // const getUser = async ( ) =>{
-    //     const userResponse = await axios.post(`/api/registerStudent`,{
-    //         userId:userId ,
-    //         amount : user.eventAmount,
-    //         eventName : user.eventName,
-    //         eventId : user.eventId,
-    //         eventAmount : user.eventAmount,
-    //         numberOfTickets : numberOfTickets
-    //     } )
-    //     setScanUser(userResponse.data.person)
-    //     console.log("user Res ",userResponse);
-    //     if(userResponse.data.person){
-    //         StatusAlertService.showSuccess(`Successful Registered to ${user.eventName}`);
-    //         // router.reload()
-    //         setuserId("")
-    //       }
-    //     else{
-    //       StatusAlertService.showError("Insuffient Funds");
-    //     } 
-    // }
-    // useEffect(()=>{
-    //     if(userId){
-    //       getUser()
-    //     }
-    //   },[userId])
+    const getUser = async ( ) =>{
+        const userResponse = await axios.post(`/api/registerStudent`,{
+            userId:userId ,
+            amount : user.eventAmount,
+            eventName : user.eventName,
+            eventId : user.eventId,
+            eventAmount : user.eventAmount,
+            numberOfTickets : numberOfTickets
+        } )
+        setScanUser(userResponse.data.person)
+        console.log("user Res ",userResponse);
+        if(userResponse.data.person){
+            StatusAlertService.showSuccess(`Successful Registered to ${user.eventName}`);
+            // router.reload()
+            setuserId("")
+          }
+        else{
+          StatusAlertService.showError("Insuffient Funds");
+        } 
+    }
+    useEffect(()=>{
+        if(userId){
+          getUser()
+        }
+      },[userId])
 
 
   return (
@@ -96,6 +119,8 @@ export default function EventId({userDetails}) {
     // </div>
     <div>
 Start
+
+<button onClick={()=>{signOut()}}>Signout</button>
     </div>
   )
 }
@@ -114,45 +139,45 @@ Start
 // }
 
 
-export async function getServerSideProps(context) {
+// export async function getServerSideProps(context) {
 
 
-    const session = await getSession(context);
-    const query = context?.query?.eventId
-    console.log("session ",query);
+//     const session = await getSession(context);
+//     const query = context?.query?.eventId
+//     console.log("session ",query);
     
-    if(!session){
-        return {
-          redirect: {
-            destination: '/auth/login',
-            permanent: false,
-          },
-        };
-      }
-    var user
-    if(session){
-      const userResponse = await axios.get(`${process.env.HOST_URL}/api/user?email=${session?.user?.email}`)
-      console.log("user ",userResponse?.data.user);
-      user  = userResponse?.data.user
-    if(user){ 
-      if(user.eventId != Number(query)){
+//     if(!session){
+//         return {
+//           redirect: {
+//             destination: '/auth/login',
+//             permanent: false,
+//           },
+//         };
+//       }
+//     var user
+//     if(session){
+//       const userResponse = await axios.get(`${process.env.HOST_URL}/api/user?email=${session?.user?.email}`)
+//       console.log("user ",userResponse?.data.user);
+//       user  = userResponse?.data.user
+//     if(user){ 
+//       if(user.eventId != Number(query)){
        
-        return {
-          redirect: {
-            destination: `/dashboard/event/${user.eventId}`,
-            permanent: false,
-          },
-        };
-      }
-    }
-  }
+//         return {
+//           redirect: {
+//             destination: `/dashboard/event/${user.eventId}`,
+//             permanent: false,
+//           },
+//         };
+//       }
+//     }
+//   }
 
-    return {
-      props: {
-        session: await getSession(context),
+//     return {
+//       props: {
+//         session: await getSession(context),
 
-        userDetails : JSON.stringify(user),
+//         userDetails : JSON.stringify(user),
 
-      },
-    };
-  }
+//       },
+//     };
+//   }
