@@ -9,6 +9,7 @@ import React, { useEffect, useState } from 'react'
 import StatusAlert, { StatusAlertService } from "react-status-alert";
 import "react-status-alert/dist/status-alert.css";
 import { useRouter } from 'next/router';
+import Header from '@/pages/Header';
 
 export default function EventId() {
     const { data: session, status } = useSession()
@@ -73,20 +74,26 @@ export default function EventId() {
             eventAmount : user.eventAmount,
             numberOfTickets : numberOfTickets,
             organiserEmail : user.email
-        } )
-        setScanUser(userResponse.data.person)
-        console.log("user Res ",userResponse);
-        if(userResponse.data.person){
+        })
+        if(userResponse.data.error){
+          StatusAlertService.showError("Invalid User");
+        }
+        else{
+
+          setScanUser(userResponse.data.person)
+          console.log("user Res ",userResponse);
+          if(userResponse.data.person){
             StatusAlertService.showSuccess(`Successful Registered to ${user.eventName}`);
             // router.reload()
             setuserId("")
             setRecievedUser(userResponse.data.person)
           }
-        else{
-          
-          StatusAlertService.showError("Insuffient Funds");
-        } 
-    }
+          else{
+            
+            StatusAlertService.showError("Insuffient Funds");
+          } 
+        }
+      }
     // useEffect(()=>{
     //     if(userId){
     //       getUser()
@@ -97,19 +104,112 @@ export default function EventId() {
   return (
     <div>
       <StatusAlert />
+      <Header/>
 
-        EventId
+        {/* EventId */}
         <div>
-            {user && (
+            {/* {user && (
               <div>
               <h1>Email : {user.email}</h1>
               <h1>Event Name : {user.eventName}</h1>
               <h1>Event Id : {user.eventId}</h1>
               <h1>Event Amount : {user.eventAmount}</h1> 
           </div>
-            )}
+            )} */}
+{user && (
+  
+<div class="rounded-lg border bg-card text-card-foreground mt-20 border-black shadow-sm w-[50%] mx-auto" data-v0-t="card">
+  <div class="flex flex-col space-y-1.5 p-6">
+    <h3 class="text-2xl font-semibold whitespace-nowrap leading-none tracking-tight">Event Details</h3>
+    {/* <p class="text-sm text-muted-foreground">Enter the amount and your phone number to complete the payment.</p> */}
+  </div>
+  <div class="p-6">
+    <div class="space-y-4">
+      <div class="space-y-2">
+        <div className='flex'>
 
-            <div>
+        <p
+          class=" font-bold mx-4"
+        
+          >
+          Email 
+        </p>
+        <p class="">{user.email} </p>
+          </div>
+        <div className='flex'>
+
+        <p
+          class=" font-bold mx-4"
+        
+          >
+          Event Name
+        </p>
+        <p class="">{user.eventName} </p>
+          </div>
+        <div className='flex'>
+
+        <p
+          class=" font-bold mx-4"
+        
+          >
+          Event Id
+        </p>
+        <p class="">{user.eventId} </p>
+          </div>
+        <div className='flex'>
+
+        <p
+          class=" font-bold mx-4"
+        
+          >
+          Event Amount 
+        </p>
+        <p class="">{user.eventAmount} </p>
+          </div>
+        <div className='flex'>
+
+        <p
+          class=" font-bold mx-4"
+        
+          >
+          User Id
+        </p>
+        <input type="text" name="userId" id="userId" className='border rounded-lg border-black' value={userId} 
+        onChange={()=>{
+                    console.log("Cant change");
+                }} readOnly/>
+          </div>
+        <div className='flex'>
+
+        <p
+          class=" font-bold mx-4"
+        
+          >
+          Number of Tickets
+        </p>
+        <input type="text" name="numberOfTickets" id="numberOfTickets" className='border rounded-lg border-black'  value={numberOfTickets}  onChange={(e)=>{
+                    const value = e.target.value.replace(/\D/g, ''); // Remove non-digit characters
+                    setNumberOfTickets(value);
+                  }}/>
+          </div>
+          
+       
+      </div>
+  
+    </div>
+  </div>
+  <div class="flex items-center p-6">
+    <button class="bg-black  text-white p-2 rounded-lg mx-auto" 
+      onClick={(e) => {
+        getUser()
+      }}>
+      Submit
+    </button>
+  </div>
+</div>
+)}
+
+            {/* <div>
                 <input type="text" name="userId" id="userId" value={userId} onChange={()=>{
                     console.log("Cant change");
                 }}/>
@@ -121,7 +221,7 @@ export default function EventId() {
                   }}/>
                   </div>
                  <button onClick={getUser}>Submit</button>
-            </div>
+            </div> */}
         </div>
 
         <div>
@@ -132,7 +232,7 @@ export default function EventId() {
           )}
         </div>
 
-        {!scanUser && (
+        {!userId && (
         <Html5QrcodePlugin
         fps={10}
         qrbox={250}

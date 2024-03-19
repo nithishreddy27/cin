@@ -34,19 +34,22 @@ export default function Header() {
     </a>
     <nav class="md:ml-auto flex flex-wrap items-center text-base justify-center">
     <Link class="mr-5 hover:text-gray-900" href={"/checkbalance"}>Check balanace</Link>
-    {status == "unauthenticated" ? <Link class="mr-5 hover:text-gray-900" href={"/auth/login"}>First Link</Link> : 
+    {status == "unauthenticated" ? <Link class="mr-5 hover:text-gray-900" href={"/auth/login"}>Login</Link> : 
      <div>
       {user?.userType == "register" && (
         <div className='flex '>
             <Link class="mr-5 hover:text-gray-900" href={"/"}>Register</Link>
             <Link class="mr-5 hover:text-gray-900" href={"/recharge"}>Recharge</Link>
+
         </div>
       )}
   {user?.userType == "organiser" && (
       <Link class="mr-5 hover:text-gray-900" href='/dashboard/event/1'> Event</Link>)}
      </div>
       } 
+      {status == "authenticated" && (
       <span onClick={()=>{signOut()}} className='mx-2 cursor-pointer'>Sign Out</span>
+      )}
 
     </nav>
 
