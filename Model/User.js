@@ -33,7 +33,10 @@ const userSchema = new mongoose.Schema(
     eventName:{type:String},
     amountCollected:{type:Number},
     eventAmount:{type:Number},
-    eventId:{type:Number}
+    eventId:{type:Number},
+    registrationDesk:{
+      type:String
+    },
    
   },
   { timestamps: true }

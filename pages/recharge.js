@@ -1,13 +1,51 @@
 import Html5QrcodePlugin from '@/src/Html5QrcodePlugin'
+import Navbar from '@/src/Navbar';
 import axios from 'axios';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 // import Html5QrcodePlugin from '@/src/components/Html5QrcodePlugin';
 import StatusAlert, { StatusAlertService } from "react-status-alert";
 import "react-status-alert/dist/status-alert.css";
 export default function Recharge() {
+
+  
     const [userId, setuserId] = useState()
     const [user, setUser] = useState()
     const [amount, setAmount] = useState()
+
+
+
+    const { data: session, status } = useSession()
+    const router = useRouter()
+    console.log("status ",status , session);
+    const [loginUser, setLoginUser] = useState()
+
+    useEffect(()=>{
+      if(status == "authenticated" && session){
+        getOrganizer(session)
+      }
+      if(status == "unauthenticated"){
+        router.push("/auth/login")
+      }
+
+    },[session])
+
+    useEffect(()=>{
+      if(user){
+        if(user?.userType != "register"){
+            signOut()
+        }
+      }
+    },[user])
+
+
+    async function getOrganizer(session){
+      const userResponse = await axios.get(`../../api/user?email=${session?.user?.email}`)
+      // console.log("user ",userResponse?.data.user);
+      setLoginUser(userResponse?.data.user)
+    }
+
     const onNewScanResult = (decodedText, decodedResult) => {
         // handle decoded results here
         console.log("decoded text ",decodedText , " ", decodedResult)
@@ -46,6 +84,7 @@ export default function Recharge() {
   return (
     <div>
       <StatusAlert />
+      <Navbar/>
         
       <h3 class="text-2xl font-semibold whitespace-nowrap leading-none tracking-tight">Recharge</h3>
 

@@ -12,10 +12,10 @@ export default async (req, res) => {
       password,
       firstName,
       lastName,
-      eventName,
-      eventId,
-      eventAmount
+    deskNumber
     } = req.body;
+
+    const registrationDesk = deskNumber
       // console.log(username,password,firstName,lastName,eventName,
       //   eventId,
       //   eventAmount)
@@ -34,9 +34,9 @@ export default async (req, res) => {
            profile:{
             firstName,
             lastName},
-            eventName,
-      eventId,
-      eventAmount
+            registrationDesk,
+            amountCollected : 0,
+            userType : "register"
           }); 
         await newUser.save();
       }

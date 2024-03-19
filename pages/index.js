@@ -7,9 +7,41 @@ import QRCode from "qrcode";
 // import {otpGenerator} from "otp-generator"
 import StatusAlert, { StatusAlertService } from "react-status-alert";
 import "react-status-alert/dist/status-alert.css";
+import { useRouter } from "next/router";
+import { signOut, useSession } from "next-auth/react";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+
+  const { data: session, status } = useSession()
+    const router = useRouter()
+    console.log("status ",status , session);
+    const [user, setUser] = useState()
+
+    useEffect(()=>{
+      if(status == "authenticated" && session){
+        getOrganizer(session)
+      }
+      if(status == "unauthenticated"){
+        router.push("/auth/login")
+      }
+
+    },[session])
+
+    useEffect(()=>{
+      if(user){
+        if(user?.userType != "register"){
+            signOut()
+        }
+      }
+    },[user])
+
+
+    async function getOrganizer(session){
+      const userResponse = await axios.get(`../../api/user?email=${session?.user?.email}`)
+      console.log("user ",userResponse?.data.user);
+      setUser(userResponse?.data.user)
+    }
   const [userId, setUserId] = useState();
   const [amount, setAmount] = useState();
   const [imageUrl, setImageUrl] = useState("");
@@ -42,10 +74,11 @@ export default function Home() {
   };
 
   async function submitForm(e) {
-    console.log("submit form ", amount, phoneNumber);
+    console.log("submit form ", amount, phoneNumber , user.registrationDesk);
     const response = await axios.post("api/data", {
       amount,
       phone: phoneNumber,
+      registerDesk : user?.registrationDesk
     });
     // console.log("resposne ",response);
     if (response.status == 200) {
