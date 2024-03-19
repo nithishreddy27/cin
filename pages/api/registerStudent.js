@@ -5,13 +5,13 @@ import connectDB from "../../src/lib/connectDB";
 export default async function handler(req, res) {
     await connectDB()
     console.log("db connected ");
-    const {userId ,amount ,eventName , eventId ,numberOfTickets } = req.body
+    const {userId ,amount ,eventName , eventId, eventAmount ,numberOfTickets } = req.body
     
     const fUser = await User.findOne({userId : userId}) 
     console.log("user id ",userId , amount , fUser.amount);  
     const updateData = {
         name: eventName,
-        amount: eventId,
+        amount: eventAmount * numberOfTickets,
         numberOfTickets: numberOfTickets
     }; 
     

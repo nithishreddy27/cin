@@ -39,6 +39,7 @@ export default function EventId() {
 
     const [userId, setuserId] = useState()
     const [scanUser, setScanUser] = useState()
+    const [recievedUser, setRecievedUser] = useState()
     const [amount, setAmount] = useState()
     const [numberOfTickets, setNumberOfTickets] = useState()
     // const router = useRouter()
@@ -67,8 +68,10 @@ export default function EventId() {
             StatusAlertService.showSuccess(`Successful Registered to ${user.eventName}`);
             // router.reload()
             setuserId("")
+            setRecievedUser(userResponse.data.person)
           }
         else{
+          
           StatusAlertService.showError("Insuffient Funds");
         } 
     }
@@ -107,6 +110,14 @@ export default function EventId() {
                   </div>
                  <button onClick={getUser}>Submit</button>
             </div>
+        </div>
+
+        <div>
+          {recievedUser && (
+            <div>
+              <h1>Avaliable Balance  : {recievedUser.amount}</h1>
+            </div>
+          )}
         </div>
 
         {!scanUser && (
