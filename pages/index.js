@@ -9,6 +9,8 @@ import StatusAlert, { StatusAlertService } from "react-status-alert";
 import "react-status-alert/dist/status-alert.css";
 import { useRouter } from "next/router";
 import { signOut, useSession } from "next-auth/react";
+import Nav from "@/src/Nav";
+import Header from "./Header";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
@@ -92,6 +94,7 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       <StatusAlert />
+      <Header/>
 
       <div>
         {/* <label htmlFor="userId">User ID</label>

@@ -37,7 +37,7 @@ export default function Checkbalance() {
     <div>checkbalance
 
         
-    {user && (
+    {user && (  
         <div>
             user amount  : {user.amount}
         </div>

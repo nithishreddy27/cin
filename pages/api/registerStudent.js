@@ -5,10 +5,10 @@ import connectDB from "../../src/lib/connectDB";
 export default async function handler(req, res) {
     await connectDB()
     console.log("db connected ");
-    const {userId ,amount ,eventName , eventId, eventAmount ,numberOfTickets } = req.body
+    const {userId ,amount ,eventName , eventId, eventAmount ,numberOfTickets ,organiserEmail} = req.body
     
     const fUser = await User.findOne({userId : userId}) 
-    console.log("user id ",userId , amount , fUser.amount);  
+    console.log("user id ",userId , amount , fUser.amount ,organiserEmail);  
     const updateData = {
         name: eventName,
         amount: eventAmount * numberOfTickets,
@@ -17,7 +17,7 @@ export default async function handler(req, res) {
     
     if(Number(fUser.amount) - ( Number(numberOfTickets) * Number(amount)) >= 0){
 
-        console.log("isndie if ",Number(fUser.amount) - ( Number(numberOfTickets) * Number(amount)));
+        // console.log("isndie if ",Number(fUser.amount) - ( Number(numberOfTickets) * Number(amount)));
         const user = await User.findOneAndUpdate(
             {userId : userId} , 
             {
@@ -28,7 +28,11 @@ export default async function handler(req, res) {
                 },
             
             { new: true })
-            console.log("user inside ",user);
+            // console.log("user inside ",user);
+
+        const organiser = await User.findOneAndUpdate({email : organiserEmail} ,
+            { $inc: { amountCollected: Number(numberOfTickets) * Number(amount) } }, 
+            { new: true }, )
     res.status(200).json({ person: user })
     }
     else{

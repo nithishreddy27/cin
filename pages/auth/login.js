@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { signIn, useSession,signOut, getSession } from 'next-auth/react';
 import Link from 'next/link';
+import Header from '../Header';
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -35,6 +36,9 @@ const LoginPage = () => {
   };
 
   return (
+    <div>
+
+      <Header/>
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
         <div>
@@ -116,6 +120,8 @@ const LoginPage = () => {
       <div>User : {JSON.stringify(session)}</div>
       </div>
     </div>
+    </div>
+
   );
 };
 

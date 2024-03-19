@@ -15,6 +15,7 @@ export default function EventId() {
     const router = useRouter()
     console.log("status ",status , session);
     const [user, setUser] = useState()
+    const { eventId } = router.query;
 
     useEffect(()=>{
       if(status == "authenticated" && session){
@@ -30,9 +31,19 @@ export default function EventId() {
 
     async function getOrganizer(session){
       const userResponse = await axios.get(`../../api/user?email=${session?.user?.email}`)
-      console.log("user ",userResponse?.data.user);
+      // console.log("user ",userResponse?.data.user);
       setUser(userResponse?.data.user)
     }
+
+    useEffect(()=>{
+      if(user){
+        console.log("isndie user ", user.eventId , eventId);
+        if(user.eventId != eventId ){
+          console.log("inside this");
+          router.push(`/dashboard/event/${user.eventId}`)
+        }
+      }
+    },[user])
     
     // const user = JSON.parse(userDetails);
     // // console.log("user ",user);
@@ -60,7 +71,8 @@ export default function EventId() {
             eventName : user.eventName,
             eventId : user.eventId,
             eventAmount : user.eventAmount,
-            numberOfTickets : numberOfTickets
+            numberOfTickets : numberOfTickets,
+            organiserEmail : user.email
         } )
         setScanUser(userResponse.data.person)
         console.log("user Res ",userResponse);

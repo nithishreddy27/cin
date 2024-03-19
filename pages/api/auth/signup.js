@@ -36,7 +36,8 @@ export default async (req, res) => {
             lastName},
             eventName,
       eventId,
-      eventAmount
+      eventAmount,
+      userType: "organiser"
           }); 
         await newUser.save();
       }
