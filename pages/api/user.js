@@ -2,7 +2,7 @@
 // import connectDB from "../lib/connectDB"
 
 import User from "@/Model/User"
-import connectDB from "../lib/connectDB"
+import connectDB from "../../src/lib/connectDB"
 
 export default async function handler(req, res) {
 

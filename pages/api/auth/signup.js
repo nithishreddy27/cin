@@ -1,5 +1,5 @@
 import User from "@/Model/User";
-import connectDB from "@/pages/lib/connectDB";
+import connectDB from "@/src/lib/connectDB";
 import crypto from "crypto";
 
 export default async (req, res) => {

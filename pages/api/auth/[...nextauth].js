@@ -3,7 +3,7 @@ import GithubProvider from "next-auth/providers/github"
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import crypto from "crypto";
-import connectDB from "@/pages/lib/connectDB";
+import connectDB from "@/src/lib/connectDB";
 import User from "@/Model/User";
 
 export const authOptions = {
