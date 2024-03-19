@@ -103,50 +103,50 @@ Start
 
 
 
-export async function getServerSideProps(context) {
+// export async function getServerSideProps(context) {
 
 
-    const session = await getSession(context);
-    const query = context?.query?.eventId
-    console.log("session ",query);
+//     const session = await getSession(context);
+//     const query = context?.query?.eventId
+//     console.log("session ",query);
     
-    if(!session){
-        return {
-          redirect: {
-            destination: '/auth/login',
-            permanent: false,
-          },
-        };
-      }
-    var user
-    if(session){
-      // console.log("In server side ",session.user.email)
-      const userResponse = await axios.get(`${process.env.HOST_URL}/api/user?email=${session?.user?.email}`)
-      console.log("user ",userResponse?.data.user);
-      user  = userResponse?.data.user
-    //   transactions = await axios.get(`${process.env.HOST_URL}/api/transactions?email=${session.user.email}`)
-        // await axios.get()
-    //   user = userResponse.data.user
-    }
-    if(user){ 
-      if(user.eventId != Number(query)){
+//     if(!session){
+//         return {
+//           redirect: {
+//             destination: '/auth/login',
+//             permanent: false,
+//           },
+//         };
+//       }
+//     var user
+//     if(session){
+//       // console.log("In server side ",session.user.email)
+//       const userResponse = await axios.get(`${process.env.HOST_URL}/api/user?email=${session?.user?.email}`)
+//       console.log("user ",userResponse?.data.user);
+//       user  = userResponse?.data.user
+//     //   transactions = await axios.get(`${process.env.HOST_URL}/api/transactions?email=${session.user.email}`)
+//         // await axios.get()
+//     //   user = userResponse.data.user
+//     }
+//     if(user){ 
+//       if(user.eventId != Number(query)){
        
-        return {
-          redirect: {
-            destination: `/dashboard/event/${user.eventId}`,
-            permanent: false,
-          },
-        };
-      }
-    }
+//         return {
+//           redirect: {
+//             destination: `/dashboard/event/${user.eventId}`,
+//             permanent: false,
+//           },
+//         };
+//       }
+//     }
 
-    return {
-      props: {
-        session: await getSession(context),
+//     return {
+//       props: {
+//         session: await getSession(context),
 
-        userDetails : JSON.stringify(user),
-        // transactionDetails : JSON.stringify(transactions.data.transactions),
+//         userDetails : JSON.stringify(user),
+//         // transactionDetails : JSON.stringify(transactions.data.transactions),
 
-      },
-    };
-  }
+//       },
+//     };
+//   }
