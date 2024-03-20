@@ -13,17 +13,17 @@ export default async function handler(req, res) {
         // console.log("user id ",userId , amount , fUser.amount ,organiserEmail);  
         const updateData = {
         name: eventName,
-        amount: eventAmount * numberOfTickets,
-        numberOfTickets: numberOfTickets
+        amount: eventAmount ,
+        
     }; 
     
-    if(Number(fUser.amount) - ( Number(numberOfTickets) * Number(amount)) >= 0){
+            if(Number(fUser.amount) - Number(eventAmount) >= 0){
         
         // console.log("isndie if ",Number(fUser.amount) - ( Number(numberOfTickets) * Number(amount)));
         const user = await User.findOneAndUpdate(
             {userId : userId} , 
             {
-                $set: {amount: Number(fUser.amount)- Number( Number(numberOfTickets) * Number(amount))},
+                $set: {amount: Number(fUser.amount)- Number(eventAmount)},
                  $push: {
                     events: updateData
                 }
@@ -33,11 +33,14 @@ export default async function handler(req, res) {
             // console.log("user inside ",user);
             
             const organiser = await User.findOneAndUpdate({email : organiserEmail} ,
-                { $inc: { amountCollected: Number(numberOfTickets) * Number(amount) } }, 
+                { $inc: { amountCollected:  Number(eventAmount) } }, 
                 { new: true }, )
                 res.status(200).json({ person: user })
             }
             else{
+
+                console.log("inside insuffienet");
+            
                 res.status(200).json({error : "Insuffienet funds"})   
             }
             

@@ -14,7 +14,8 @@ import Header from '@/pages/Header';
 export default function EventId() {
     const { data: session, status } = useSession()
     const router = useRouter()
-    console.log("status ",status , session);
+    // console.log("status ",status , session);
+    const [eventAmount, setEventAmount] = useState()
     const [user, setUser] = useState()
     const { eventId } = router.query;
 
@@ -66,19 +67,22 @@ export default function EventId() {
     };
 
     const getUser = async ( ) =>{
-        const userResponse = await axios.post(`/api/registerStudent`,{
+        if(eventAmount > 0){
+
+          const userResponse = await axios.post(`/api/registerStudent`,{
             userId:userId ,
-            amount : user.eventAmount,
+            amount : eventAmount,
             eventName : user.eventName,
             eventId : user.eventId,
-            eventAmount : user.eventAmount,
-            numberOfTickets : numberOfTickets,
+            eventAmount : eventAmount,
+            // numberOfTickets : numberOfTickets,
             organiserEmail : user.email
-        })
-        if(userResponse.data.error){
-          StatusAlertService.showError("Invalid User");
-        }
-        else{
+          })
+          if(userResponse.data.error){
+            StatusAlertService.showError(userResponse.data.error);
+          }
+    
+          else{
 
           setScanUser(userResponse.data.person)
           console.log("user Res ",userResponse);
@@ -93,6 +97,10 @@ export default function EventId() {
             StatusAlertService.showError("Insuffient Funds");
           } 
         }
+      }
+      else{
+        StatusAlertService.showError("Inavalid Amount");
+      }
       }
     // useEffect(()=>{
     //     if(userId){
@@ -164,7 +172,7 @@ export default function EventId() {
           >
           Event Amount 
         </p>
-        <p class="">{user.eventAmount} </p>
+        <p class=""><input type="text" name="eventAmount" id="eventAmount" value={eventAmount} onChange={(e)=>{setEventAmount(e.target.value)}} /> </p>
           </div>
         <div className='flex'>
 
@@ -179,7 +187,7 @@ export default function EventId() {
                     console.log("Cant change");
                 }} readOnly/>
           </div>
-        <div className='flex'>
+        {/* <div className='flex'>
 
         <p
           class=" font-bold mx-4"
@@ -191,7 +199,7 @@ export default function EventId() {
                     const value = e.target.value.replace(/\D/g, ''); // Remove non-digit characters
                     setNumberOfTickets(value);
                   }}/>
-          </div>
+          </div> */}
           
        
       </div>
