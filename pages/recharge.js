@@ -1,7 +1,7 @@
 import Html5QrcodePlugin from '@/src/Html5QrcodePlugin'
 import Navbar from '@/src/Navbar';
 import axios from 'axios';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 // import Html5QrcodePlugin from '@/src/components/Html5QrcodePlugin';
@@ -14,7 +14,7 @@ export default function Recharge() {
     const [user, setUser] = useState()
     const [amount, setAmount] = useState()
 
-
+    const [scannerUser, setScannerUser] = useState()
 
     const { data: session, status } = useSession()
     const router = useRouter()
@@ -58,16 +58,20 @@ export default function Recharge() {
 
     const getUser = async ( ) =>{
         const userResponse = await axios.get(`/api/getUser?userId=${userId}`)
-        if(userResponse){
+        if(userResponse.data.person){
+          setScannerUser(userResponse.data.person)
 
         }
-        setUser(userResponse.data.person)
-        console.log("user Res ",userResponse);
+        if(userResponse.data.error){
+          StatusAlertService.showError("Recharge Successful");
+
+        }
+        // console.log("user Res ",userResponse);
     }
 
     const rechargeUser = async () =>{
         const rechargeResponse =  await axios.post("/api/recharge",{
-            userId : user.userId,
+            userId : scannerUser.userId,
             amount : amount
         })
         if(rechargeResponse.status == 200){
@@ -89,7 +93,7 @@ export default function Recharge() {
       <h3 class="text-2xl font-semibold whitespace-nowrap leading-none tracking-tight">Recharge</h3>
 
 
-    {!user && (
+    {!scannerUser && (
         <Html5QrcodePlugin
         fps={10}
         qrbox={250}
@@ -98,7 +102,7 @@ export default function Recharge() {
     />
     )}
 
-    {user && (
+    {scannerUser && (
         <div>
 <div class="rounded-lg border bg-card text-card-foreground shadow-sm w-full max-w-md mx-auto" data-v0-t="card">
   
@@ -114,19 +118,19 @@ export default function Recharge() {
   <div class="p-6 grid gap-4">
     <div class="flex items-center gap-4">
       <div class="text-sm text-gray-500 dark:text-gray-400">Amount</div>
-      <div class="font-semibold">{user.amount}</div>
+      <div class="font-semibold">{scannerUser.amount}</div>
     </div>
     <div class="flex items-center gap-4">
       <div class="text-sm text-gray-500 dark:text-gray-400">Type</div>
-      <div class="font-semibold">{user.userType}</div>
+      <div class="font-semibold">{scannerUser.userType}</div>
     </div>
     <div class="flex items-center gap-4">
       <div class="text-sm text-gray-500 dark:text-gray-400">Phone</div>
-      <div class="font-semibold">{user.phoneNumber}</div>
+      <div class="font-semibold">{scannerUser.phoneNumber}</div>
     </div>
     <div class="flex items-center gap-4">
       <div class="text-sm text-gray-500 dark:text-gray-400">ID</div>
-      <div class="font-semibold">{user.userId}</div>
+      <div class="font-semibold">{scannerUser.userId}</div>
     </div>
     <div>
       <div class="text-sm text-gray-500 dark:text-gray-400">Enter Amount</div>
