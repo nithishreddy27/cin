@@ -5,6 +5,8 @@ import { useRouter } from 'next/router';
 import { signIn, useSession,signOut, getSession } from 'next-auth/react';
 import Link from 'next/link';
 import Header from '../Header';
+import StatusAlert, { StatusAlertService } from "react-status-alert";
+import "react-status-alert/dist/status-alert.css";
 
 const LoginPage = () => {
   const [username, setUsername] = useState('');
@@ -23,20 +25,30 @@ const LoginPage = () => {
       password,
     });
 
+    
     if (result?.error) {
       console.error('Login error:', result.error);
+      seterror("Invalid username and password")
       return;
     }
 
-    console.log(result);
+    console.log("res ",result);
     if(!result?.user){
-        seterror("Invalid username and password")
+      console.log("isndie ",result.user);
+        // seterror("Invalid username and password")
     }
+    if(result.status == 200){
+       StatusAlertService.showSuccess("Successful");
+    }
+    // if(result?.user){
+    //   StatusAlertService.showSuccess("Successful");
+    // }
     
   };
 
   return (
     <div>
+      <StatusAlert />
 
       <Header/>
     <div className="min-h-screen flex justify-center  bg-gray-50 border  px-4 sm:px-6 lg:px-8">
@@ -101,6 +113,9 @@ const LoginPage = () => {
               Log In
             </button>
 
+          </div>
+          <div className='text-red-500'>
+            {error ? error :"" }
           </div>
 
           {/* <button
